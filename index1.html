@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Catalog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            scroll-behavior: smooth;
+            background-color: #f8f7f5;
+            color: #2b2b2b;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2b2b2b;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #2b2b2b;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: #e07b39;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: url('https://via.placeholder.com/1400x700') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.2s ease-in;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 600px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 3rem 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Featured Categories */
+        .categories {
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            /* loading: lazy; */
+        }
+
+        .category-card h3 {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* Product Listing */
+        .products {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filter {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filter select {
+            padding: 0.7rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: scale(1.03);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            /* loading: lazy; */
+        }
+
+        .product-card h3, .product-card p {
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+        /* Product Detail */
+        .product-detail {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .product-detail .main-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-detail .main-image img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-detail .main-image img:hover {
+            transform: scale(1.1);
+        }
+
+        .product-detail .images {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .product-detail .images img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border 0.3s ease;
+        }
+
+        .product-detail .images img:hover {
+            border: 2px solid #e07b39;
+        }
+
+        .product-detail .info {
+            padding: 1rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            margin: 1.5rem 0;
+            padding: 0.8rem 1.5rem;
+            background-color: #25D366;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebe55;
+        }
+
+        /* Gallery */
+        .gallery {
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* loading: lazy; */
+        }
+
+        /* About Page */
+        .about-page {
+            padding: 3rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Contact Page */
+        .contact-page {
+            padding: 3rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-page a {
+            color: #e07b39;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-page a:hover {
+            text-decoration: underline;
+        }
+
+        .map {
+            width: 100%;
+            height: 350px;
+            border: 0;
+            margin-top: 2rem;
+            border-radius: 10px;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2b2b2b;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: #e07b39;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                padding: 1rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 50vh;
+            }
+
+            .categories, .product-grid, .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .product-card img, .category-card img, .gallery img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Clothing Catalog</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">☰</div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <section id="home">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Elevate Your Style</h1>
+                <p>Discover our curated collection of timeless, sustainable fashion designed for modern lifestyles.</p>
+            </div>
+        </div>
+        <div class="about-section">
+            <h2>About Our Brand</h2>
+            <p>We are passionate about crafting high-quality clothing that blends style, comfort, and sustainability. Explore our collections to find pieces that resonate with your unique style.</p>
+        </div>
+        <div class="categories">
+            <div class="category-card" style="animation-delay: 0.1s;">
+                <img src="https://via.placeholder.com/250" alt="Men's Clothing" loading="lazy">
+                <h3>Men's Clothing</h3>
+            </div>
+            <div class="category-card" style="animation-delay: 0.2s;">
+                <img src="https://via.placeholder.com/250" alt="Women's Clothing" loading="lazy">
+                <h3>Women's Clothing</h3>
+            </div>
+            <div class="category-card" style="animation-delay: 0.3s;">
+                <img src="https://via.placeholder.com/250" alt="Accessories" loading="lazy">
+                <h3>Accessories</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Listing -->
+    <section id="products">
+        <div class="products">
+            <div class="filter">
+                <select id="categoryFilter" aria-label="Filter by category">
+                    <option value="all">All Categories</option>
+                    <option value="men">Men's Clothing</option>
+                    <option value="women">Women's Clothing</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <section id="product-detail" style="display: none;">
+        <div class="product-detail" itemscope itemtype="http://schema.org/Product">
+            <div class="main-image">
+                <img id="mainImage" src="https://via.placeholder.com/400" alt="Product" itemprop="image">
+            </div>
+            <div class="info">
+                <h2 id="productName" itemprop="name">Sample Product</h2>
+                <p><strong>Price:</strong> <span id="productPrice" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="priceCurrency" content="USD">$</span><span itemprop="price">99.99</span></span></p>
+                <p><strong>Size:</strong> S, M, L, XL</p>
+                <p><strong>Color:</strong> Black, White, Blue</p>
+                <p><strong>Material:</strong> 100% Cotton</p>
+                <a id="whatsappOrder" href="#" class="whatsapp-btn" aria-label="Order via WhatsApp">Order via WhatsApp</a>
+                <div class="images">
+                    <img src="https://via.placeholder.com/100" alt="Product 1" onclick="changeImage(this.src)">
+                    <img src="https://via.placeholder.com/100" alt="Product 2" onclick="changeImage(this.src)">
+                    <img src="https://via.placeholder.com/100" alt="Product 3" onclick="changeImage(this.src)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+        <div class="gallery">
+            <img src="https://via.placeholder.com/250" alt="Lookbook 1" loading="lazy">
+            <img src="https://via.placeholder.com/250" alt="Lookbook 2" loading="lazy">
+            <img src="https://via.placeholder.com/250" alt="Lookbook 3" loading="lazy">
+            <img src="https://via.placeholder.com/250" alt="Lookbook 4" loading="lazy">
+        </div>
+    </section>
+
+    <!-- About Page -->
+    <section id="about">
+        <div class="about-page">
+            <h2>Our Story</h2>
+            <p>Founded in 2020, our brand is dedicated to creating timeless, sustainable fashion. Our mission is to empower individuals through style, quality craftsmanship, and eco-conscious practices.</p>
+        </div>
+    </section>
+
+    <!-- Contact Page -->
+    <section id="contact">
+        <div class="contact-page">
+            <h2>Contact Us</h2>
+            <p><a href="https://wa.me/1234567890?text=Hello%20I%20have%20a%20question%20about%20your%20products" aria-label="Contact via WhatsApp">WhatsApp Us</a></p>
+            <p><a href="https://instagram.com/yourbrand" aria-label="Follow on Instagram">Follow us on Instagram</a></p>
+            <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509368!2d144.9537353153167!3d-37.81627977975159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0x5045675218ce6e0!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1634567890123!5m2!1sen!2sus" allowfullscreen="" loading="lazy" aria-label="Store location map"></iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Clothing Catalog. All rights reserved.</p>
+        <p>
+            <a href="https://instagram.com/yourbrand">Instagram</a> |
+            <a href="https://wa.me/1234567890">WhatsApp</a>
+        </p>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/1234567890?text=Hello%20I%20have%20a%20question%20about%20your%20products" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12.031 0C5.424 0 .048 5.376.048 12c0 2.176.576 4.224 1.584 6l-1.584 5.856 6-1.584c1.728.936 3.696 1.44 5.952 1.44 6.608 0 11.984-5.376 11.984-12S18.639 0 12.031 0zm0 21.984c-2.112 0-4.128-.576-5.856-1.584l-.432-.24-3.552.96.96-3.504-.24-.432c-1.008-1.728-1.584-3.744-1.584-5.904 0-5.856 4.752-10.608 10.608-10.608S22.639 6.144 22.639 12 17.887 22.608 12.031 22.608zm6.048-6.528c-.336-.168-1.968-.96-2.256-1.056-.336-.096-.576-.144-.816.168-.24.336-.96 1.056-1.176 1.272-.192.192-.384.216-.72.12-.336-.096-1.44-.528-2.736-1.632-1.008-.864-1.68-1.92-1.872-2.256-.192-.336-.024-.528.144-.696.168-.192.336-.432.504-.648.144-.192.192-.336.288-.528.096-.192.048-.336-.024-.528-.072-.192-.72-1.728-.96-2.352-.24-.624-.48-.528-.72-.528-.192 0-.432 0-.672 0-.24 0-.624.096-.96.48-.336.384-1.296 1.248-1.296 3.048 0 1.776 1.296 3.504 1.488 3.744.192.24 2.592 4.032 6.288 5.664.864.384 1.536.624 2.064.816.864.336 1.656.288 2.256.192.672-.12 1.968-.792 2.256-1.56.288-.768.288-1.44.192-1.584-.096-.144-.336-.216-.672-.384z"/></svg>
+    </a>
+
+    <script>
+        // Sample product data
+        const products = [
+            { id: 1, name: "Men's Casual Shirt", price: 49.99, category: "men", image: "https://via.placeholder.com/250" },
+            { id: 2, name: "Women's Summer Dress", price: 79.99, category: "women", image: "https://via.placeholder.com/250" },
+            { id: 3, name: "Leather Belt", price: 29.99, category: "accessories", image: "https://via.placeholder.com/250" },
+            { id: 4, name: "Men's Jacket", price: 99.99, category: "men", image: "https://via.placeholder.com/250" },
+        ];
+
+        // Populate product grid
+        function displayProducts(category = "all") {
+            const productGrid = document.getElementById("productGrid");
+            productGrid.innerHTML = "";
+            const filteredProducts = category === "all" ? products : products.filter(p => p.category === category);
+            filteredProducts.forEach((product, index) => {
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.setAttribute("role", "button");
+                card.setAttribute("tabindex", "0");
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    <h3>${product.name}</h3>
+                    <p>$${product.price.toFixed(2)}</p>
+                `;
+                card.onclick = () => showProductDetail(product);
+                card.onkeydown = (e) => { if (e.key === "Enter") showProductDetail(product); };
+                productGrid.appendChild(card);
+            });
+        }
+
+        // Show product detail
+        function showProductDetail(product) {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("products").style.display = "none";
+            document.getElementById("gallery").style.display = "none";
+            document.getElementById("about").style.display = "none";
+            document.getElementById("contact").style.display = "none";
+            document.getElementById("product-detail").style.display = "block";
+            document.getElementById("mainImage").src = product.image;
+            document.getElementById("productName").textContent = product.name;
+            document.getElementById("productPrice").textContent = product.price.toFixed(2);
+            document.getElementById("whatsappOrder").href = `https://wa.me/1234567890?text=I%20am%20interested%20in%20${encodeURIComponent(product.name)}`;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // Change main image in product detail
+        function changeImage(src) {
+            document.getElementById("mainImage").src = src;
+        }
+
+        // Filter products
+        document.getElementById("categoryFilter").addEventListener("change", (e) => {
+            displayProducts(e.target.value);
+        });
+
+        // Hamburger menu toggle
+        document.getElementById("hamburger").addEventListener("click", () => {
+            const navLinks = document.getElementById("navLinks");
+            navLinks.classList.toggle("active");
+        });
+
+        // Active link highlighting
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener("click", function() {
+                document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove("active"));
+                this.classList.add("active");
+                document.getElementById("navLinks").classList.remove("active");
+                document.getElementById("product-detail").style.display = "none";
+                document.getElementById("home").style.display = "block";
+                document.getElementById("products").style.display = "block";
+                document.getElementById("gallery").style.display = "block";
+                document.getElementById("about").style.display = "block";
+                document.getElementById("contact").style.display = "block";
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener("click", function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth"
+                });
+            });
+        });
+
+        // Initial product display
+        displayProducts();
+    </script>
+</body>
+</html>
