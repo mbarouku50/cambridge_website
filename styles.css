@@ -1027,6 +1027,8 @@ footer {
     100% { transform: scale(1); }
 }
 
+/* ... existing CSS above ... */
+
 /* --- Responsive Design --- */
 @media (max-width: 1024px) {
     .product-detail-card {
@@ -1076,6 +1078,11 @@ footer {
     .contact-details {
         padding-right: 0;
     }
+
+    /* Adjust nav search for slightly smaller screens */
+    .nav-search-container input {
+        width: 120px; /* Make it a bit narrower */
+    }
 }
 
 @media (max-width: 768px) {
@@ -1092,6 +1099,27 @@ footer {
         font-size: 1rem;
         max-width: 90%;
     }
+
+    /* Adjust hero search container for smaller screens */
+    .hero-search-container {
+        flex-direction: column; /* Stack input and button */
+        border-radius: 12px; /* Less rounded corners */
+        width: 80%; /* Slightly narrower */
+    }
+    .hero-search-container input {
+        border-bottom: 1px solid #eee; /* Separator for stacked elements */
+        border-radius: 12px 12px 0 0; /* Round top corners */
+        padding: 0.8rem 1rem; /* Smaller padding */
+        font-size: 1rem; /* Smaller font */
+        text-align: center;
+    }
+    .hero-search-container button {
+        border-radius: 0 0 12px 12px; /* Round bottom corners */
+        padding: 0.8rem 1rem; /* Smaller padding */
+        font-size: 1rem; /* Smaller font */
+        width: 100%; /* Full width */
+    }
+
 
     nav {
         padding: 1rem 1rem;
@@ -1129,6 +1157,11 @@ footer {
         display: block;
     }
 
+    /* Hide nav search bar on mobile, rely on hero search or expand menu */
+    .nav-search-container {
+        display: none;
+    }
+
     section {
         padding: 3rem 1.5rem;
     }
@@ -1141,6 +1174,7 @@ footer {
         font-size: 1rem;
     }
 
+    /* This rule affects categories, product-grid, gallery, testimonials, footer for screens 768px and below */
     .categories, .product-grid, .gallery, .testimonials-grid, .footer-content {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
@@ -1164,24 +1198,16 @@ footer {
         width: 20px;
         height: 20px;
     }
-
-    .about-images {
-        flex-direction: column;
-        align-items: center;
-    }
-    .about-images img {
-        max-width: 90%;
-    }
 }
 
-/* Two products per row on small screens (e.g., up to 480px or slightly more) */
-@media (max-width: 580px) { /* Changed from 480px to 580px for a slightly larger range */
+/* NEW/ADJUSTED MEDIA QUERY FOR "SMALL SCREENS" TO DISPLAY 2 PRODUCTS PER ROW */
+@media (max-width: 580px) {
     .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Adjust minmax for 2 items */
-        gap: 1rem; /* Smaller gap for tighter fit */
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Ensures roughly 2 columns on screens around 320px-580px */
+        gap: 1rem; /* Adjust gap for tighter fit */
     }
     .product-card img {
-        height: 180px; /* Slightly smaller images */
+        height: 180px; /* Slightly smaller images for compactness */
     }
     .product-card h3 {
         font-size: 1.1rem; /* Smaller font for title */
@@ -1192,7 +1218,7 @@ footer {
     .product-card .short-description {
         font-size: 0.8rem;
     }
-    .card-whatsapp-btn {
+    .product-card .card-whatsapp-btn {
         font-size: 0.8rem;
         padding: 0.4rem 0.6rem;
     }
@@ -1256,3 +1282,5 @@ footer {
         padding: 0.8rem 1.5rem;
     }
 }
+
+/* ... existing CSS below ... */
