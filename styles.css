@@ -1,3 +1,4 @@
+/* Universal Styles */
 * {
     margin: 0;
     padding: 0;
@@ -7,11 +8,77 @@
 
 body {
     scroll-behavior: smooth;
-    background-color: #F4F1DE;
-    color: #2b2b2b;
+    background-color: #F4F1DE; /* Light background */
+    color: #2b2b2b; /* Dark text */
+    line-height: 1.6;
 }
 
-/* Navigation */
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: #FF6F61; /* Accent color */
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: #2A9D8F; /* Secondary accent color */
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #FF6F61;
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes extra space below images */
+}
+
+section {
+    padding: 4rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    opacity: 0; /* For fade-in animation */
+    transform: translateY(30px); /* For slide-up animation */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Remove initial animation for non-home pages sections if they are direct content */
+body:not(.homepage) section {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* --- Navigation --- */
 nav {
     background: linear-gradient(135deg, #fff, #f9f9f9);
     padding: 1.2rem 2rem;
@@ -62,52 +129,150 @@ nav {
     color: #2b2b2b;
 }
 
-/* Hero Section */
-.hero {
-    height: 80vh;
-    background: url('images/1.jpg') center/cover no-repeat;
+/* --- Hero Carousel (Homepage Only) --- */
+.hero-carousel-container {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Adjust as needed */
+    overflow: hidden;
+}
+
+.hero-carousel {
     display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: #fff;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-    animation: fadeIn 1.5s ease-in;
+    padding: 1rem; /* Padding for mobile */
 }
 
 .hero-content h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
+    font-size: 3.8rem;
     margin-bottom: 1.5rem;
+    color: #fff; /* Override section h1 color */
+    animation: fadeInDown 1.2s ease-out;
 }
 
 .hero-content p {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     max-width: 700px;
+    color: #f0f0f0;
+    animation: fadeInUp 1.2s ease-out;
 }
 
-/* About Section */
-.about-section {
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-nav:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-nav.prev {
+    left: 1rem;
+}
+
+.carousel-nav.next {
+    right: 1rem;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.8rem;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+/* --- About Section (brief on home) --- */
+#about-brief {
     padding: 4rem 2rem;
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
-    animation: fadeInUp 0.8s ease-out;
 }
 
-.about-section h2 {
-    font-family: 'Playfair Display', serif;
-    color: #FF6F61;
+#about-brief h2 {
+    color: #2A9D8F;
 }
 
-/* Featured Categories */
+.learn-more-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 1.8rem;
+    background: #2A9D8F;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.learn-more-btn:hover {
+    background: #FF6F61;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* --- Categories Section --- */
 .categories {
-    padding: 4rem 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
 }
 
 .category-card {
@@ -116,6 +281,7 @@ nav {
     overflow: hidden;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
 }
 
 .category-card:hover {
@@ -127,7 +293,6 @@ nav {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    /* loading: lazy; */
 }
 
 .category-card h3 {
@@ -137,37 +302,12 @@ nav {
     color: #2b2b2b;
 }
 
-/* Product Listing */
-.products {
-    padding: 4rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.filter {
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
-.filter select {
-    padding: 0.8rem 1.2rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #2A9D8F;
-    background: #fff;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-.filter select:focus {
-    border-color: #FF6F61;
-    outline: none;
-}
-
+/* --- Product Grids (Latest, Featured, All Products) --- */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .product-card {
@@ -175,34 +315,154 @@ nav {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes button to bottom */
 }
 
 .product-card:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .product-card img {
     width: 100%;
     height: 240px;
     object-fit: cover;
-    /* loading: lazy; */
 }
 
-.product-card h3, .product-card p {
+.product-card-content {
     padding: 1rem;
-    text-align: center;
+    flex-grow: 1; /* Allows content to take up available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Product Detail */
-.product-detail {
+.product-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    color: #2b2b2b;
+}
+
+.product-card .price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #FF6F61;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.product-card .short-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+    text-align: left;
+    flex-grow: 1; /* Ensures descriptions take up space */
+}
+
+.product-card .card-whatsapp-btn {
+    display: block; /* Make it a block-level element */
+    width: calc(100% - 2rem); /* Full width of card content area */
+    margin: 0 auto 1rem auto; /* Center button with bottom margin */
+    padding: 0.6rem 1rem;
+    background: #25D366;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.product-card .card-whatsapp-btn:hover {
+    background: #1ebe55;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+/* --- All Products Page Specifics --- */
+#products-page .products-container {
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.filter-sort-controls {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-sort-controls select,
+.filter-sort-controls input[type="text"] { /* Style for search input */
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #2A9D8F;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-sort-controls select:focus,
+.filter-sort-controls input[type="text"]:focus { /* Focus style for search input */
+    border-color: #FF6F61;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+}
+
+/* --- Product Detail Section --- */
+#product-detail {
+    display: none; /* Controlled by JS */
     padding: 4rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    animation: fadeIn 0.6s ease-out;
+}
+
+#product-detail.visible {
+    display: block !important; /* Show when active, override display:none */
+}
+
+.product-detail-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr; /* Image wider than info */
     gap: 2.5rem;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.back-to-products {
+    position: absolute;
+    top: 1.5rem;
+    left: 2.5rem;
+    background: none;
+    border: none;
+    color: #2A9D8F;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.back-to-products:hover {
+    color: #FF6F61;
+    transform: translateX(-5px);
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
 .product-detail .main-image {
@@ -216,6 +476,7 @@ nav {
     max-height: 550px;
     object-fit: cover;
     transition: transform 0.4s ease;
+    border-radius: 12px;
 }
 
 .product-detail .main-image img:hover {
@@ -225,39 +486,69 @@ nav {
 .product-detail .images {
     display: flex;
     gap: 1.2rem;
-    overflow-x: auto;
+    overflow-x: auto; /* Allows scrolling for many thumbnails */
     margin-top: 1.5rem;
+    padding-bottom: 0.5rem; /* Space for scrollbar */
 }
 
 .product-detail .images img {
-    width: 90px;
+    min-width: 90px; /* Ensure thumbnails don't shrink too much */
     height: 90px;
     object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: border 0.3s ease;
+    transition: border 0.3s ease, transform 0.2s ease;
 }
 
 .product-detail .images img:hover {
     border: 2px solid #FF6F61;
+    transform: translateY(-2px);
 }
 
 .product-detail .info {
-    padding: 1.5rem;
+    padding-top: 2rem; /* Account for back button */
+}
+
+.product-detail .info h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.product-detail .info .product-description {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 1.5rem;
+}
+
+.product-detail .info .price-display {
+    font-size: 1.6rem;
+    color: #FF6F61;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
 
 .product-detail .info select {
     padding: 0.8rem;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 1.5rem 0; /* Adjust spacing */
     width: 100%;
     border-radius: 8px;
     border: 1px solid #2A9D8F;
+    font-size: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-detail .info select:focus {
+    border-color: #FF6F61;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
 }
 
 .whatsapp-btn {
     display: inline-block;
-    margin: 2rem 0;
+    margin-top: 2rem; /* Adjusted for spacing */
     padding: 1rem 2rem;
     background: #25D366;
     color: #fff;
@@ -265,17 +556,69 @@ nav {
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
 }
 
 .whatsapp-btn:hover {
     background: #1ebe55;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+    text-decoration: none;
 }
 
-/* Modal */
+/* --- WhatsApp CTA Section (on homepage & other pages) --- */
+.whatsapp-cta-section {
+    background: linear-gradient(to right, #2A9D8F, #3eaf9e); /* Green gradient */
+    color: #fff;
+    padding: 5rem 2rem;
+    text-align: center;
+    margin: 4rem auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    animation: fadeIn 1s ease-out;
+}
+
+.cta-content h2 {
+    color: #fff;
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem auto;
+    line-height: 1.8;
+}
+
+.whatsapp-btn-large {
+    display: inline-block;
+    padding: 1.2rem 2.8rem;
+    background: #FF6F61; /* Orange accent */
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 111, 97, 0.4);
+}
+
+.whatsapp-btn-large:hover {
+    background: #e65c50;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 111, 97, 0.5);
+    text-decoration: none;
+}
+
+
+/* --- Modal --- */
 .modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
@@ -283,17 +626,19 @@ nav {
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 2000;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Centered vertically */
+    justify-content: center; /* Centered horizontally */
 }
 
 .modal-content {
     background: #fff;
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 12px;
     text-align: center;
     max-width: 500px;
     width: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: fadeInUp 0.4s ease-out;
 }
 
@@ -301,19 +646,33 @@ nav {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
     cursor: pointer;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #FF6F61;
+}
+
+.modal-content h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: #2b2b2b;
 }
 
-/* Gallery */
+.modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #444;
+}
+
+/* --- Gallery / Best Sellers --- */
 .gallery {
-    padding: 4rem 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
 }
 
 .gallery img {
@@ -322,54 +681,239 @@ nav {
     object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    /* loading: lazy; */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* About Page */
-.about-page {
-    padding: 4rem 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
+.gallery img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.about-page h2 {
-    font-family: 'Playfair Display', serif;
-    color: #FF6F61;
+/* --- Customer Testimonials --- */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-/* Contact Page */
-.contact-page {
-    padding: 4rem 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.contact-page a {
-    color: #2A9D8F;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.contact-page a:hover {
-    text-decoration: underline;
-}
-
-.contact-page h2 {
-    font-family: 'Playfair Display', serif;
-    color: #FF6F61;
-}
-
-.map {
-    width: 100%;
-    height: 400px;
-    border: 0;
-    margin-top: 2.5rem;
+.testimonial-card {
+    background: #fff;
     border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
 }
 
-/* Floating WhatsApp Button */
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-card .quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+.testimonial-card .author {
+    font-weight: 600;
+    color: #2A9D8F;
+    font-size: 1rem;
+}
+
+
+/* --- About Page --- */
+#about-page .about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    text-align: left;
+}
+
+#about-page .about-text {
+    padding: 1rem;
+}
+
+#about-page .about-text h3 {
+    font-size: 2rem;
+    color: #2A9D8F;
+    margin-top: 2rem;
+}
+#about-page .about-text h3:first-child {
+    margin-top: 0; /* No top margin for first h3 */
+}
+
+
+#about-page .about-text p {
+    font-size: 1.05rem;
+    color: #333;
+    line-height: 1.7;
+}
+
+.about-images {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center; /* Center images if they don't fill width */
+}
+
+.about-images img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-images img:hover {
+    transform: scale(1.02);
+}
+
+
+/* --- Contact Page --- */
+#contact-page .contact-info-map-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Info takes less space than map */
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto 4rem auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+}
+
+.contact-details {
+    padding-right: 1rem;
+}
+
+.contact-details h3, .contact-map h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #2b2b2b;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.info-item strong {
+    color: #2A9D8F;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.info-item p {
+    margin-bottom: 0; /* Remove default paragraph margin */
+}
+
+.contact-details .social-links a {
+    display: inline-block;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
+    color: #2A9D8F;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.contact-details .social-links a:hover {
+    color: #FF6F61;
+}
+
+.contact-map .map {
+    width: 100%;
+    height: 400px; /* Consistent height for map */
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.contact-form-section {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.contact-form-section h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #2b2b2b;
+}
+
+.contact-form .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.contact-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #2A9D8F;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-form .submit-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #FF6F61;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 111, 97, 0.3);
+}
+
+.contact-form .submit-btn:hover {
+    background: #e65c50;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 111, 97, 0.4);
+}
+
+.form-note {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 1.5rem;
+}
+
+
+/* --- Floating WhatsApp Button --- */
 .whatsapp-float {
     position: fixed;
     bottom: 30px;
@@ -386,33 +930,82 @@ nav {
     text-decoration: none;
     z-index: 1000;
     animation: pulse 2s infinite;
+    transition: transform 0.3s ease;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.whatsapp-float:hover {
+    transform: scale(1.1);
 }
 
-/* Footer */
+/* --- Footer --- */
 footer {
     background: #2b2b2b;
     color: #F4F1DE;
-    padding: 2.5rem;
-    text-align: center;
+    padding: 3.5rem 2rem;
+    text-align: left;
 }
 
-footer a {
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
     color: #FF6F61;
-    text-decoration: none;
-    margin: 0 0.8rem;
 }
 
-footer a:hover {
-    text-decoration: underline;
+.footer-links, .footer-social, .footer-contact {
+    h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 0.7rem;
+    }
+    a {
+        color: #F4F1DE;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block; /* Make links block for easier clicking */
+    }
+    a:hover {
+        color: #FF6F61;
+        text-decoration: underline;
+    }
+    p {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
 }
 
-/* Animations */
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+
+/* --- Utility Classes / Hidden State --- */
+.hidden {
+    display: none !important;
+}
+
+/* --- Animations --- */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -423,61 +1016,243 @@ footer a:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Design */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* --- Responsive Design --- */
 @media (max-width: 1024px) {
-    .product-detail {
-        grid-template-columns: 1fr;
+    .product-detail-card {
+        grid-template-columns: 1fr; /* Stack on smaller screens */
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .product-detail .info {
+        padding-top: 0; /* Remove top padding when stacked */
+    }
+
+    .back-to-products {
+        top: 1rem;
+        left: 1rem;
+        font-size: 0.9rem;
     }
 
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
     }
 
     .hero-content p {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+    }
+
+    .whatsapp-cta-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .cta-content h2 {
+        font-size: 2.2rem;
+    }
+
+    #about-page .about-content {
+        grid-template-columns: 1fr; /* Stack about content */
+    }
+    #about-page .about-text {
+        text-align: center;
+        padding: 0;
+    }
+
+    #contact-page .contact-info-map-container {
+        grid-template-columns: 1fr; /* Stack contact info and map */
+        padding: 2rem;
+    }
+    .contact-details {
+        padding-right: 0;
     }
 }
 
 @media (max-width: 768px) {
-    .hero {
+    .hero-carousel-container {
         height: 60vh;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+        max-width: 90%;
+    }
+
+    nav {
+        padding: 1rem 1rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
     }
 
     .nav-links {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 70px;
+        top: 70px; /* Height of nav bar */
         left: 0;
         right: 0;
         background: #fff;
         padding: 1.5rem;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #eee;
     }
 
     .nav-links.active {
         display: flex;
     }
 
+    .nav-links li {
+        margin-bottom: 1rem;
+    }
+    .nav-links li:last-child {
+        margin-bottom: 0;
+    }
+
     .hamburger {
         display: block;
     }
-}
 
-@media (max-width: 480px) {
-    .hero {
-        height: 50vh;
+    section {
+        padding: 3rem 1.5rem;
     }
 
-    .hero-content h1 {
-        font-size: 2rem;
+    .section-header h2 {
+        font-size: 2.2rem;
     }
 
-    .categories, .product-grid, .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    .section-header p {
+        font-size: 1rem;
+    }
+
+    .categories, .product-grid, .gallery, .testimonials-grid, .footer-content {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
     .product-card img, .category-card img, .gallery img {
         height: 200px;
+    }
+
+    .product-detail .images {
+        flex-wrap: wrap; /* Allow thumbnails to wrap */
+        justify-content: center;
+    }
+
+    .whatsapp-float {
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+    }
+    .whatsapp-float svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .about-images {
+        flex-direction: column;
+        align-items: center;
+    }
+    .about-images img {
+        max-width: 90%;
+    }
+}
+
+/* Two products per row on small screens (e.g., up to 480px or slightly more) */
+@media (max-width: 580px) { /* Changed from 480px to 580px for a slightly larger range */
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Adjust minmax for 2 items */
+        gap: 1rem; /* Smaller gap for tighter fit */
+    }
+    .product-card img {
+        height: 180px; /* Slightly smaller images */
+    }
+    .product-card h3 {
+        font-size: 1.1rem; /* Smaller font for title */
+    }
+    .product-card .price {
+        font-size: 1rem;
+    }
+    .product-card .short-description {
+        font-size: 0.8rem;
+    }
+    .card-whatsapp-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .hero-carousel-container {
+        height: 50vh;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+
+    nav {
+        padding: 1rem 1rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .categories, .gallery, .testimonials-grid {
+        grid-template-columns: 1fr; /* Single column layout for these specific grids */
+    }
+
+    .filter-sort-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .product-detail-card {
+        padding: 1.5rem;
+    }
+    .product-detail .info h2 {
+        font-size: 1.8rem;
+    }
+    .product-detail .info .price-display {
+        font-size: 1.4rem;
+    }
+
+    .whatsapp-btn, .whatsapp-btn-large {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
     }
 }
