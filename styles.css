@@ -15,7 +15,7 @@ body {
 
 h1, h2, h3 {
     font-family: 'Playfair Display', serif;
-    color: #FF6F61; /* Accent color */
+    color: #000000; /* Accent color */
     margin-bottom: 1rem;
 }
 
@@ -25,12 +25,12 @@ p {
 
 a {
     text-decoration: none;
-    color: #2A9D8F; /* Secondary accent color */
+    color: #000000; /* Secondary accent color */
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #FF6F61;
+    color: #000000;
     text-decoration: underline;
 }
 
@@ -73,7 +73,7 @@ section.animate-in {
 
 .section-header p {
     font-size: 1.1rem;
-    color: #555;
+    color: #000000;
     max-width: 700px;
     margin: 0 auto;
 }
@@ -100,7 +100,7 @@ nav {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
     font-weight: 700;
-    color: #FF6F61;
+    color: #000000;
 }
 
 .nav-links {
@@ -126,7 +126,7 @@ nav {
     display: none;
     font-size: 1.8rem;
     cursor: pointer;
-    color: #2b2b2b;
+    color: #000000;
 }
 
 /* --- Hero Carousel (Homepage Only) --- */
@@ -248,14 +248,14 @@ nav {
 }
 
 #about-brief h2 {
-    color: #2A9D8F;
+    color: #000000;
 }
 
 .learn-more-btn {
     display: inline-block;
     margin-top: 2rem;
     padding: 0.8rem 1.8rem;
-    background: #2A9D8F;
+    background: #000000;
     color: #fff;
     border-radius: 8px;
     font-weight: 500;
@@ -263,7 +263,7 @@ nav {
 }
 
 .learn-more-btn:hover {
-    background: #FF6F61;
+    background: #686767;
     transform: translateY(-2px);
     text-decoration: none;
 }
@@ -351,7 +351,7 @@ nav {
 .product-card .price {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #FF6F61;
+    color: #000000;
     margin-bottom: 0.5rem;
     text-align: left;
 }
@@ -369,7 +369,7 @@ nav {
     width: calc(100% - 2rem); /* Full width of card content area */
     margin: 0 auto 1rem auto; /* Center button with bottom margin */
     padding: 0.6rem 1rem;
-    background: #25D366;
+    background: #000000;
     color: #fff;
     text-align: center;
     text-decoration: none;
@@ -470,7 +470,30 @@ nav {
     overflow: hidden;
     border-radius: 12px;
 }
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-left: 20px;
+}
 
+.social-icons a {
+    color: #333;
+    transition: color 0.3s ease;
+    font-size: 18px;
+}
+
+.social-icons a:hover {
+    color: #555;
+}
+
+/* For mobile view */
+@media (max-width: 768px) {
+    .social-icons {
+        margin-left: 0;
+        justify-content: center;
+        padding: 10px 0;
+    }
+}
 .product-detail .main-image img {
     width: 100%;
     max-height: 550px;
