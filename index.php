@@ -132,26 +132,112 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
         </div>
     </section>
 
-    <section id="testimonials-section">
-        <div class="section-header">
-            <h2>What Our Customers Say</h2>
-            <p>Hear from those who love Cambridge.</p>
-        </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <p class="quote">"Absolutely love the quality and style! Cambridge has truly elevated my wardrobe. Highly recommend!"</p>
-                <p class="author">- Juma.</p>
-            </div>
-            <div class="testimonial-card">
-                <p class="quote">"Sustainable fashion that doesn't compromise on design. Their pieces are timeless and comfortable."</p>
-                <p class="author">- Alex </p>
-            </div>
-            <div class="testimonial-card">
-                <p class="quote">"The customer service is fantastic, and the clothes are even better in person. My new favorite brand!"</p>
-                <p class="author">- Mwajuma.</p>
-            </div>
-        </div>
-    </section>
+   <!-- In your testimonials section, replace the empty testimonials-grid with this: -->
+<section id="testimonials-section">
+    <div class="section-header">
+        <h2>What Our Customers Say</h2>
+        <p>Hear from those who love Cambridge.</p>
+    </div>
+    <div class="testimonials-grid">
+        <?php
+        // Fetch testimonials from database
+        $testimonialsQuery = "SELECT * FROM feedbck ORDER BY created_at DESC LIMIT 3";
+        $testimonialsResult = mysqli_query($conn, $testimonialsQuery);
+        
+        if(mysqli_num_rows($testimonialsResult) > 0) {
+            while($testimonial = mysqli_fetch_assoc($testimonialsResult)) {
+                echo '<div class="testimonial-card">';
+                echo '<div class="testimonial-content">';
+                echo '<p>"' . htmlspecialchars($testimonial['feedback']) . '"</p>';
+                echo '</div>';
+                echo '<div class="testimonial-author">';
+                echo '<span class="author-name">' . htmlspecialchars($testimonial['name']) . '</span>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p class="no-testimonials">No testimonials yet. Be the first to review!</p>';
+        }
+        ?>
+    </div>
+</section>
+
+<style>
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.testimonial-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-content p {
+    font-style: italic;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.testimonial-content p::before,
+.testimonial-content p::after {
+    color: #2A9D8F;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.testimonial-content p::before {
+    content: '"';
+    position: absolute;
+    left: -0.5rem;
+    top: -0.5rem;
+}
+
+.testimonial-content p::after {
+    content: '"';
+}
+
+.testimonial-author {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.author-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.author-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.no-testimonials {
+    text-align: center;
+    grid-column: 1/-1;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 
     <section class="whatsapp-cta-section">
         <div class="cta-content">

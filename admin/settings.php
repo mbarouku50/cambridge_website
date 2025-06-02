@@ -53,14 +53,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = "Profile updated successfully!";
         }
         
-        // Change password
+
+                // Change password
         if(isset($_POST['change_password'])) {
             $current_password = $_POST['current_password'];
             $new_password = $_POST['new_password'];
             $confirm_password = $_POST['confirm_password'];
             
-            // Verify current password
-            if(!password_verify($current_password, $admin_data['password'])) {
+            // Verify current password - matches your login method
+            $current_password_hashed = sha1($admin_email."_".sha1($current_password));
+            if($current_password_hashed !== $admin_data['password']) {
                 throw new Exception("Current password is incorrect");
             }
             
@@ -73,12 +75,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 throw new Exception("New passwords do not match");
             }
             
-            // Hash new password
-            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            // Hash the new password the same way as login
+            $new_password_hashed = sha1($admin_email."_".sha1($new_password));
             
             $query = "UPDATE admin_users SET password = ? WHERE email = ?";
             $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "ss", $hashed_password, $admin_email);
+            mysqli_stmt_bind_param($stmt, "ss", $new_password_hashed, $admin_email);
             
             if(!mysqli_stmt_execute($stmt)) {
                 throw new Exception("Failed to update password: " . mysqli_error($conn));
@@ -109,206 +111,489 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Admin Settings | Clothing Shop</title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --dark-color: #000000;
+            --primary-color: #6C63FF;
+            --primary-light: #a29bfe;
+            --dark-color: #2D3436;
+            --dark-light: #636e72;
             --light-color: #ffffff;
-            --gray-color: #f5f5f5;
-            --danger-color: #e74c3c;
-            --success-color: #2ecc71;
+            --gray-color: #f8f9fa;
+            --gray-dark: #dfe6e9;
+            --danger-color: #d63031;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: var(--gray-color);
+            color: var(--dark-color);
             min-height: 100vh;
+            overflow-x: hidden;
         }
-        
+
         .dashboard-header {
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            padding: 15px 30px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 0 30px;
+            height: var(--header-height);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
         }
-        
+
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .logo span {
-            color: var(--primary-color);
-        }
-        
-        .nav-menu {
+            font-size: 22px;
+            font-weight: 700;
             display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
             gap: 20px;
         }
-        
-        .nav-menu a {
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--light-color);
-            text-decoration: none;
-            transition: color 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
         }
-        
-        .nav-menu a:hover {
-            color: var(--primary-color);
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
         .dashboard-container {
             display: flex;
+            padding-top: var(--header-height);
         }
-        
+
         .sidebar {
-            width: 250px;
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            height: calc(100vh - 60px);
+            width: var(--sidebar-width);
+            background-color: var(--light-color);
+            height: calc(100vh - var(--header-height));
             padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            position: fixed;
+            transition: var(--transition);
+            z-index: 90;
         }
-        
+
         .sidebar-menu {
             list-style: none;
+            margin-top: 20px;
         }
-        
+
         .sidebar-menu li {
-            padding: 15px 25px;
-            transition: all 0.3s;
+            margin: 5px 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
         }
-        
+
         .sidebar-menu li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(108, 99, 255, 0.1);
         }
-        
+
         .sidebar-menu a {
-            color: var(--light-color);
+            color: var(--dark-light);
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-weight: 500;
         }
-        
+
+        .sidebar-menu i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
         .sidebar-menu li.active {
             background-color: var(--primary-color);
         }
-        
+
+        .sidebar-menu li.active a {
+            color: var(--light-color);
+        }
+
         .main-content {
             flex: 1;
             padding: 30px;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
         }
-        
+
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
-        
+
         .page-title {
+            font-size: 28px;
             color: var(--dark-color);
-            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
-        .settings-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .section-title {
-            color: var(--dark-color);
-            font-size: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
+
         .btn {
             padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
         .btn-primary {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .btn-primary:hover {
-            background-color: #2980b9;
+            background-color: #5a52e0;
         }
-        
+
         .btn-danger {
             background-color: var(--danger-color);
             color: white;
         }
-        
+
         .btn-danger:hover {
             background-color: #c0392b;
         }
-        
-        .alert {
-            padding: 15px;
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #00a884;
+        }
+
+        .edit-product-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark-color);
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-dark);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--gray-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .checkbox-item:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        .current-image-container {
             margin-bottom: 20px;
-            border-radius: 4px;
+            position: relative;
+            max-width: 300px;
         }
-        
+
+        .current-image {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--gray-dark);
+            transition: var(--transition);
+        }
+
+        .current-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .image-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .file-upload {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            border: 2px dashed var(--gray-dark);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(108, 99, 255, 0.05);
+        }
+
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-dark);
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: rgba(0, 184, 148, 0.1);
+            border-left: 4px solid var(--success-color);
+            color: var(--success-color);
         }
-        
+
         .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: rgba(214, 48, 49, 0.1);
+            border-left: 4px solid var(--danger-color);
+            color: var(--danger-color);
         }
-        
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        .alert-content h4 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .alert-content p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
         /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .dashboard-container {
-                flex-direction: column;
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
             }
             
-            .sidebar {
-                width: 100%;
-                height: auto;
+            .sidebar.active {
+                transform: translateX(0);
             }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 0 15px;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 80;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Preview for uploaded image */
+        .image-preview {
+            display: none;
+            margin-top: 15px;
+            max-width: 300px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-dark);
         }
     </style>
 </head>
 <body>
     <header class="dashboard-header">
-        <div class="logo">Clothing<span>Shop</span></div>
+        <div class="logo">
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        <span class="logo-icon"><i class="fas fa-tshirt"></i></span>
+        Admin</span></span>
+    </div>
         <nav class="nav-menu">
             <span>Welcome, <?php echo htmlspecialchars($_SESSION['email']); ?></span>
             <a href="logout.php">Logout</a>
@@ -320,8 +605,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <ul class="sidebar-menu">
                 <li><a href="adminDashboard.php">Dashboard</a></li>
                 <li><a href="product.php">Products</a></li>
+                <li><a href="comment.php">Comments</a></li>
                 <li class="active"><a href="settings.php">Settings</a></li>
-                <li><a href="#">Comments</a></li>
             </ul>
         </aside>
         

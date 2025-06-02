@@ -133,6 +133,22 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Message styling */
+.feedback-message {
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+    border-radius: 2px;
+}
+
+.success {
+    color: #2ecc71;
+}
+
+.error {
+    color: #e74c3c;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .footer-main {
@@ -184,10 +200,51 @@ footer {
             
             <div class="footer-section">
                 <h3>Your Feedback</h3>
-                <form class="feedback-form">
-                    <input type="text" placeholder="Your name">
-                    <textarea placeholder="Your message..."></textarea>
-                    <button type="submit" class="submit-btn">Send</button>
+                <form class="feedback-form" method="post">
+                    <input type="text" name="name" placeholder="Your name" required>
+                    <textarea name="feedback" placeholder="Your message..." required></textarea>
+                    <button type="submit" name="send" class="submit-btn">Send</button>
+                    <?php
+                    if(isset($_POST['send'])) {
+                        include("connection.php");
+                        
+                        // Sanitize inputs
+                        $name = mysqli_real_escape_string($conn, $_POST['name']);
+                        $feedback = mysqli_real_escape_string($conn, $_POST['feedback']);
+                        
+                        // Check if connection is successful
+                        if (!$conn) {
+                            echo '<div class="feedback-message error">Database connection failed</div>';
+                        } else {
+                            // Check if table exists or create it
+                            $checkTable = mysqli_query($conn, "SHOW TABLES LIKE 'feedbck'");
+                            if(mysqli_num_rows($checkTable) == 0) {
+                                $createTable = mysqli_query($conn, "CREATE TABLE feedbck (
+                                    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+                                    name VARCHAR(100) NOT NULL,
+                                    feedback TEXT NOT NULL,
+                                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                                )");
+                                
+                                if(!$createTable) {
+                                    echo '<div class="feedback-message error">Error creating table: ' . mysqli_error($conn) . '</div>';
+                                }
+                            }
+                            
+                            // Insert data
+                            $query = mysqli_query($conn, "INSERT INTO feedbck (name, feedback) VALUES ('$name', '$feedback')");
+                            
+                            if($query) {
+                                echo '<div class="feedback-message success">Thank you for your feedback!</div>';
+                            } else {
+                                echo '<div class="feedback-message error">Error: ' . mysqli_error($conn) . '</div>';
+                            }
+                            
+                            // Close connection
+                            mysqli_close($conn);
+                        }
+                    }
+                    ?>
                 </form>
             </div>
         </div>
