@@ -16,8 +16,8 @@ include("temperate/header.php");
                 <p>We envision a future where fashion is synonymous with sustainability and ethical production. Cambridge strives to be a leader in this movement, continuously innovating our processes and materials to minimize environmental impact. We want to build a community that values craftsmanship, quality, and the story behind every garment.</p>
             </div>
             <div class="about-images">
-                <img src="images/1.jpg" alt="Our Team Working" loading="lazy">
-                <img src="images/2.jpg" alt="Sustainable Fabric Selection" loading="lazy">
+                <img src="images/JPG_71.jpg" alt="Our Team Working" loading="lazy">
+                <img src="images/JPG_57.jpg" alt="Sustainable Fabric Selection" loading="lazy">
             </div>
             <!-- <div class="about-text">
                 <h3>Our Craftsmanship</h3>

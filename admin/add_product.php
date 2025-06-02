@@ -80,8 +80,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
         }
 
         // Check file size (max 2MB)
-        if($file_size > 2000000) {
-            throw new Exception("File is too large (max 2MB allowed).");
+        if($file_size > 8000000) {
+            throw new Exception("File is too large (max 8MB allowed).");
         }
 
         // Allow certain file formats

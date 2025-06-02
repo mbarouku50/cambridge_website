@@ -25,21 +25,21 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
     <div class="hero-carousel-container">
         <div class="hero-carousel" id="heroCarousel">
             <div class="carousel-slide">
-                <img src="images/1.jpg" alt="Fashion Collection 1" loading="lazy">
+                <img src="images/JPG_7.jpg" alt="Fashion Collection 1" loading="lazy">
                 <div class="hero-content">
                     <h1>Discover Cambridge Trends</h1>
                     <p>Elevate your wardrobe and leave a Lasting impression wherever you go.</p>
                 </div>
             </div>
             <div class="carousel-slide">
-                <img src="images/2.jpg" alt="Fashion Collection 2" loading="lazy">
+                <img src="images/JPG_71.jpg" alt="Fashion Collection 2" loading="lazy">
                 <div class="hero-content">
                     <h1>Style Meets Sustainability</h1>
                     <p>Embrace fashion that feels good and does good for the planet.</p>
                 </div>
             </div>
             <div class="carousel-slide">
-                <img src="images/3.jpg" alt="Fashion Collection 3" loading="lazy">
+                <img src="images/JPG_57.jpg" alt="Fashion Collection 3" loading="lazy">
                 <div class="hero-content">
                     <h1>Your Perfect Outfit Awaits</h1>
                     <p>Explore our diverse range of clothing for every occasion.</p>
@@ -58,28 +58,6 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
             <a href="about.html" class="learn-more-btn">Learn More About Us</a>
         </div>
     </section>
-
-    <section id="categories-section">
-        <div class="section-header">
-            <h2>Shop by Category</h2>
-            <p>Find exactly what you're looking for.</p>
-        </div>
-        <div class="categories">
-            <?php foreach($categories as $category): 
-                $categoryName = $category['category'];
-                $categoryImage = "images/" . strtolower(str_replace(' ', '-', $categoryName)) . ".jpg";
-                if(!file_exists($categoryImage)) {
-                    $categoryImage = "images/3.jpg"; // Default image
-                }
-            ?>
-            <div class="category-card" onclick="location.href='products.php?category=<?= urlencode($categoryName) ?>'">
-                <img src="<?= $categoryImage ?>" alt="<?= $categoryName ?>" loading="lazy">
-                <h3><?= $categoryName ?></h3>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-
     <section id="latest-products-section">
         <div class="section-header">
             <h2>Latest Arrivals</h2>

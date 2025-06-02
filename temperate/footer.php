@@ -1,63 +1,203 @@
+<style>
+/* Ultra Compact Footer */
+footer {
+    background: #2b2b2b;
+    color: #f8f9fa;
+    padding: 1rem 0 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-section h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.3rem;
+}
+
+.footer-links a {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.social-icons {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.3rem;
+}
+
+.social-icons a {
+    color: #adb5bd;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.social-icons a:hover {
+    color: #fff;
+}
+
+.footer-contact p {
+    margin-bottom: 0.4rem;
+    color: #adb5bd;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    width: 100%;
+    padding: 0.3rem;
+    border: 1px solid #495057;
+    border-radius: 2px;
+    background: #343a40;
+    color: #fff;
+    font-size: 0.7rem;
+}
+
+.feedback-form textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+.submit-btn {
+    background: #2A9D8F;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    width: fit-content;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 0.5rem 0;
+    border-top: 1px solid #495057;
+    color: #adb5bd;
+    font-size: 0.65rem;
+}
+
+/* WhatsApp float */
+.whatsapp-float {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #25D366;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.whatsapp-float i {
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-main {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-main {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    
+    .footer-section h3 {
+        margin-bottom: 0.3rem;
+    }
+}
+</style>
+
 <footer>
-        <div class="footer-content">
-            <a href="index.html">
-                <div class="logo">
-                    <img src="images/12.png" alt="Chic Trends Logo" style="width: 150px; height: auto;">
-                </div>
-            </a>
-            <div class="footer-links">
+    <div class="footer-content">
+        <div class="footer-main">
+            <div class="footer-section footer-links">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.php">Home</a></li>
                     <li><a href="products.php">Products</a></li>
                     <li><a href="about.php">About Us</a></li>
                     <li><a href="contact.php">Contact</a></li>
-                     <li><a href="./admin/adminLogin.php">Admin</a></li>
+                    <li><a href="./admin/adminLogin.php">Admin</a></li>
                 </ul>
             </div>
-            <div class="footer-social">
-                <h3>Connect With Us</h3>
-                <a href="https://www.instagram.com/p/DJvrM-fIlRi/?igsh=MXNycHE2YWMzZWRieA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
-                <a href="https://wa.me/+255748791897" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">WhatsApp</a>
-            </div>
-            <div class="footer-contact">
+            
+            <div class="footer-section footer-contact">
                 <h3>Contact Info</h3>
-                <p>Email: info@cambridge.com</p>
-                <p>Phone: +255 123 456 789</p>
+                <p>info@cambridge.com</p>
+                <p>+255 123 456 789</p>
                 <p>Dar es Salaam, Tanzania</p>
             </div>
+            
+            <div class="footer-section footer-social">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Your Feedback</h3>
+                <form class="feedback-form">
+                    <input type="text" placeholder="Your name">
+                    <textarea placeholder="Your message..."></textarea>
+                    <button type="submit" class="submit-btn">Send</button>
+                </form>
+            </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>© 2025 Cambridge. All rights reserved.</p>
+            <p>&copy; 2025 Cambridge. All rights reserved.</p>
         </div>
-    </footer>
+    </div>
 
-    <a href="https://wa.me/+255748791897?text=Hello%20I%20have%20a%20question%20about%20your%20products" class="whatsapp-float" aria-label="Chat on WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12.031 0C5.424 0 .048 5.376.048 12c0 2.176.576 4.224 1.584 6l-1.584 5.856 6-1.584c1.728.936 3.696 1.44 5.952 1.44 6.608 0 11.984-5.376 11.984-12S18.639 0 12.031 0zm0 21.984c-2.112 0-4.128-.576-5.856-1.584l-.432-.24-3.552.96.96-3.504-.24-.432c-1.008-1.728-1.584-3.744-1.584-5.904 0-5.856 4.752-10.608 10.608-10.608S22.639 6.144 22.639 12 17.887 22.608 12.031 22.608zm6.048-6.528c-.336-.168-1.968-.96-2.256-1.056-.336-.096-.576-.144-.816.168-.24.336-.96 1.056-1.176 1.272-.192.192-.384.216-.72.12-.336-.096-1.44-.528-2.736-1.632-1.008-.864-1.68-1.92-1.872-2.256-.192-.336-.024-.528.144-.696.168-.192.336-.432.504-.648.144-.192.192-.336.288-.528.096-.192.048-.336-.024-.528-.072-.192-.72-1.728-.96-2.352-.24-.624-.48-.528-.72-.528-.192 0-.432 0-.672 0-.24 0-.624.096-.96.48-.336.384-1.296 1.248-1.296 3.048 0 1.776 1.296 3.504 1.488 3.744.192.24 2.592 4.032 6.288 5.664.864.384 1.536.624 2.064.816.864.336 1.656.288 2.256.192.672-.12 1.968-.792 2.256-1.56.288-.768.288-1.44.192-1.584-.096-.144-.336-.216-.672-.384z"/></svg>
+    <a href="https://wa.me/+255748791897" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
     </a>
-
-    <script src="script.js"></script>
-    <script>
-        // Specific script for homepage functionality
-        document.addEventListener("DOMContentLoaded", () => {
-            // Initialize product displays for homepage sections
-            populateProductGrid("latestProductsGrid", latestProducts);
-            populateProductGrid("featuredProductsGrid", featuredProducts);
-
-            // Initialize hero carousel
-            showSlide(currentSlide);
-            startCarousel();
-
-            // Set active class for current page
-            const currentPage = window.location.pathname.split("/").pop();
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                if (link.getAttribute('href') === currentPage || (currentPage === '' && link.getAttribute('href') === 'index.html')) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+</footer>

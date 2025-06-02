@@ -82,7 +82,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_product'])) {
             // Validate image
             $check = getimagesize($tmp_name);
             if($check === false) throw new Exception("File is not a valid image");
-            if($file_size > 2000000) throw new Exception("File is too large (max 2MB)");
+            if($file_size > 8000000) throw new Exception("File is too large (max 8MB)");
             
             $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
             if(!in_array($file_type, $allowed_types)) throw new Exception("Only JPG, JPEG, PNG & GIF files allowed");
