@@ -78,56 +78,7 @@ section.animate-in {
     margin: 0 auto;
 }
 
-/* --- Navigation --- */
-nav {
-    background: linear-gradient(135deg, #fff, #f9f9f9);
-    padding: 1.2rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
 
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #000000;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 2.5rem;
-}
-
-.nav-links li a {
-    text-decoration: none;
-    color: #2b2b2b;
-    font-size: 1rem;
-    font-weight: 400;
-    transition: color 0.3s ease;
-}
-
-.nav-links li a:hover,
-.nav-links li a.active {
-    color: #2A9D8F;
-}
-
-.hamburger {
-    display: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #000000;
-}
 
 /* --- Hero Carousel (Homepage Only) --- */
 .hero-carousel-container {

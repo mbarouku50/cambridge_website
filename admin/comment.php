@@ -1,8 +1,5 @@
 <?php
-// Error reporting at the VERY TOP
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 session_start();
 include("../connection.php");
@@ -51,8 +48,9 @@ $all_feedback = mysqli_fetch_all($feedback_result, MYSQLI_ASSOC);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Feedback | Clothing Shop</title>
-<style>
-:root {
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <style>
+    :root {
     --primary-color: #6C63FF;
     --primary-light: #a29bfe;
     --dark-color: #2D3436;
@@ -213,234 +211,240 @@ body {
     color: var(--light-color);
 }
 
-.main-content {
+        .main-content {
     flex: 1;
     padding: 30px;
     margin-left: var(--sidebar-width);
     transition: var(--transition);
 }
 
-.welcome-message {
-    margin-bottom: 30px;
-}
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
 
-.welcome-message h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: var(--dark-color);
-}
+       
 
-.welcome-message p {
-    color: var(--dark-light);
-    font-size: 16px;
-}
+        .action-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
 
-.stats-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
-}
+        .delete-btn {
+            background-color: #e74c3c;
+            color: #fff;
+        }
 
-.card {
-    background: var(--light-color);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: var(--transition);
-    cursor: pointer;
-    border-left: 4px solid var(--primary-color);
-    position: relative;
-    overflow: hidden;
-}
+        .alert {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+        .alert-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .alert-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        /* Modern Responsive Table Styles */
+.feedback-container {
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 100%);
-    opacity: 0;
-    transition: var(--transition);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    margin: 20px 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.card:hover::before {
-    opacity: 1;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.card-title {
-    color: var(--dark-light);
-    font-size: 16px;
-    margin-bottom: 10px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.card-value {
-    color: var(--dark-color);
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.card-icon {
-    font-size: 24px;
-    color: var(--primary-color);
-}
-
-.card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--dark-light);
-    font-size: 14px;
-}
-
-.trend-up {
-    color: var(--success-color);
-}
-
-.trend-down {
-    color: var(--danger-color);
-}
-
-.section-title {
-    font-size: 20px;
-    margin: 30px 0 20px;
-    color: var(--dark-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.recent-activities {
-    background: var(--light-color);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.activity-list {
-    list-style: none;
-}
-
-.activity-item {
-    padding: 15px 0;
-    border-bottom: 1px solid var(--gray-dark);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.activity-item:last-child {
-    border-bottom: none;
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(108, 99, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-color);
-    font-size: 18px;
-}
-
-.activity-content {
-    flex: 1;
-}
-
-.activity-title {
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.activity-time {
-    color: var(--dark-light);
-    font-size: 13px;
-}
 .feedback-table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: var(--light-color);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    animation: fadeIn 0.5s ease-out forwards;
+    min-width: 600px; /* Minimum width before scrolling kicks in */
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .feedback-table thead {
-    background-color: var(--primary-color);
-    color: var(--light-color);
+    background: linear-gradient(135deg, #6C63FF 0%, #4a42d6 100%);
+    color: white;
 }
 
-.feedback-table th, .feedback-table td {
-    padding: 12px 15px;
+.feedback-table th {
+    padding: 15px 12px;
     text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-.feedback-table tbody tr:nth-child(even) {
-    background-color: var(--gray-color);
+.feedback-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.feedback-table tbody tr:last-child {
+    border-bottom: none;
 }
 
 .feedback-table tbody tr:hover {
-    background-color: rgba(108, 99, 255, 0.1);
-    transition: background-color 0.3s;
+    background-color: rgba(108, 99, 255, 0.05);
 }
 
-.feedback-table th:first-child,
-.feedback-table td:first-child {
-    border-top-left-radius: 12px;
+.feedback-table td {
+    padding: 12px;
+    color: #555;
+    vertical-align: middle;
+    position: relative;
 }
 
-.feedback-table th:last-child,
-.feedback-table td:last-child {
-    border-top-right-radius: 12px;
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .feedback-table {
+        min-width: 100%;
+    }
+    
+    .feedback-table th,
+    .feedback-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    
+    /* Make the first column sticky on mobile */
+    .feedback-table td:first-child {
+        position: sticky;
+        left: 0;
+        background: white;
+        z-index: 5;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Hide less important columns on small screens */
+    .feedback-table th:nth-child(4),
+    .feedback-table td:nth-child(4) {
+        display: none;
+    }
 }
 
-.feedback-table .action-btn {
-    background-color: var(--danger-color);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+/* Feedback message with expandable functionality */
+.feedback-message {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
-    font-size: 14px;
-    transition: var(--transition);
 }
 
-.feedback-table .action-btn:hover {
-    background-color: #c0392b;
+.feedback-message.expanded {
+    white-space: normal;
+    max-width: none;
+    overflow: visible;
 }
 
-.alert {
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    font-size: 14px;
+/* Rating Stars */
+.rating-stars {
+    color: #FFC107;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
-.alert-success {
-    background-color: #dff9fb;
-    color: var(--success-color);
+/* Action Buttons */
+.action-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-.alert-danger {
-    background-color: #fab1a0;
-    color: var(--danger-color);
+.btn-table {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    min-width: 60px;
 }
 
+.btn-view {
+    background: rgba(108, 99, 255, 0.1);
+    color: #6C63FF;
+}
+
+.btn-delete {
+    background: rgba(231, 76, 60, 0.1);
+    color: #E74C3C;
+}
+
+/* Empty State */
+.empty-table {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    font-style: italic;
+    min-width: 100%;
+}
+
+/* Mobile action menu alternative */
+.mobile-actions {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .action-btns {
+        display: none;
+    }
+    
+    .mobile-actions {
+        display: block;
+    }
+    
+    .mobile-action-btn {
+        background: none;
+        border: none;
+        color: #6C63FF;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    
+    .mobile-action-menu {
+        position: absolute;
+        right: 5px;
+        top: 100%;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        z-index: 20;
+        display: none;
+    }
+    
+    .mobile-action-menu.show {
+        display: block;
+    }
+    
+    .mobile-action-item {
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    
+    .mobile-action-item:hover {
+        background: #f5f5f5;
+    }
+}
 
 @media (max-width: 992px) {
     .sidebar {
@@ -525,7 +529,7 @@ body {
     font-size: 12px;
     margin-left: auto;
 }
-</style>
+    </style>
 </head>
 <body>
 <header class="dashboard-header">
@@ -535,10 +539,6 @@ body {
         Admin</span></span>
     </div>
     <div class="user-menu">
-        <div class="user-profile">
-            <div class="avatar"><?php echo strtoupper(substr($email, 0, 1)); ?></div>
-            <span><?php echo htmlspecialchars($email); ?></span>
-        </div>
         <button class="logout-btn" onclick="window.location.href='logout.php'">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
@@ -548,11 +548,10 @@ body {
 <div class="dashboard-container">
     <aside class="sidebar">
         <ul class="sidebar-menu">
-            <li><a href="adminDashboard.php">Dashboard</a></li>
-            <li><a href="product.php">Products</a></li>
-            <li class="active"><a href="comment.php">Comments</a></li>
-            <li><a href="settings.php">Settings</a></li>
-            
+            <li ><a href="adminDashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="product.php"><i class="fas fa-tshirt"></i> Products</a></li>
+            <li class="active"><a href="comment.php"><i class="fas fa-comments"></i> Comments <span class="badge"><?php echo $total_feedback; ?></span></a></li>
+            <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
     </aside>
 
@@ -567,50 +566,134 @@ body {
             </div>
         <?php endif; ?>
 
-        <table class="feedback-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Feedback</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($all_feedback) > 0): ?>
-                    <?php foreach ($all_feedback as $feedback): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($feedback['feedback_id'] ?? ''); ?></td>
-                            <td><?php echo htmlspecialchars($feedback['name'] ?? ''); ?></td>
-                            <td class="feedback-message" title="<?php echo htmlspecialchars($feedback['feedback'] ?? ''); ?>">
-                                <?php echo htmlspecialchars($feedback['feedback'] ?? ''); ?>
-                            </td>
-                            <td><?php echo isset($feedback['created_at']) ? date('M j, Y', strtotime($feedback['created_at'])) : ''; ?></td>
-                            <td>
-                                <button class="action-btn delete-btn"
-                                        onclick="confirmDelete(<?php echo (int)$feedback['feedback_id']; ?>)">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+        <div class="feedback-container">
+    <table class="feedback-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Feedback</th>
+                <th>Rating</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($all_feedback) > 0): ?>
+                <?php foreach ($all_feedback as $feedback): ?>
                     <tr>
-                        <td colspan="5" style="text-align: center;">No feedback found</td>
+                        <td>#<?php echo htmlspecialchars($feedback['feedback_id']); ?></td>
+                        <td><?php echo htmlspecialchars($feedback['name']); ?></td>
+                        <td class="feedback-message" onclick="this.classList.toggle('expanded')">
+                            <?php echo htmlspecialchars($feedback['feedback']); ?>
+                        </td>
+                        <td>
+                            <?php if (!empty($feedback['rating'])): ?>
+                                <div class="rating-stars">
+                                    <?php 
+                                    $rating = (int)$feedback['rating'];
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo $i <= $rating ? '★' : '☆';
+                                    }
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+                        </td>
+                        <td><?php echo date('M j, Y', strtotime($feedback['created_at'])); ?></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-table btn-view" onclick="viewFeedback(<?php echo $feedback['feedback_id']; ?>)">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn-table btn-delete" onclick="confirmDelete(<?php echo $feedback['feedback_id']; ?>)">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                            <div class="mobile-actions">
+                                <button class="mobile-action-btn" onclick="toggleMobileMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="mobile-action-menu">
+                                    <div class="mobile-action-item" onclick="viewFeedback(<?php echo $feedback['feedback_id']; ?>)">
+                                        <i class="fas fa-eye"></i> View
+                                    </div>
+                                    <div class="mobile-action-item" onclick="confirmDelete(<?php echo $feedback['feedback_id']; ?>)">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </main>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" class="empty-table">
+                        <i class="far fa-comment-dots" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>No feedback found</p>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
 
 <script>
+// Mobile menu toggle
+function toggleMobileMenu(button) {
+    const menu = button.nextElementSibling;
+    menu.classList.toggle('show');
+    
+    // Close when clicking elsewhere
+    document.addEventListener('click', function closeMenu(e) {
+        if (!button.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove('show');
+            document.removeEventListener('click', closeMenu);
+        }
+    });
+}
+
+// Feedback functions
 function confirmDelete(id) {
     if (confirm("Are you sure you want to delete this feedback?")) {
         window.location.href = "comment.php?delete_id=" + id;
     }
 }
+
+function viewFeedback(id) {
+    // Implement your view functionality here
+    alert("Viewing feedback ID: " + id);
+}
+</script>
+<script>
+// Toggle sidebar on mobile
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.overlay').classList.toggle('active');
+});
+
+// Close sidebar when clicking on overlay
+document.querySelector('.overlay').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.remove('active');
+    this.classList.remove('active');
+});
+
+// Add animation to cards when they come into view
+const cards = document.querySelectorAll('.card');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+cards.forEach(card => {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+    observer.observe(card);
+});
 </script>
 </body>
 </html>

@@ -74,10 +74,10 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
                     <h3><?= $product['name'] ?></h3>
                     <div class="product-meta">
                         <span class="product-category"><?= $product['category'] ?></span>
-                        <span class="product-price"><?= number_format($product['price'], 2) ?> Ks</span>
+                        <span class="product-price">Tsh.<?= number_format($product['price'], 2) ?></span>
                     </div>
                     <p class="product-description"><?= substr($product['description'], 0, 60) ?>...</p>
-                    <a href="https://wa.me/+255748791897?text=I%20want%20to%20buy%20<?= urlencode($product['name']) ?>%20(Product ID: <?= $product['id'] ?>)" class="card-whatsapp-btn">
+                    <a href="https://wa.me/+255748791897?text=I%20want%20to%20buy%20<?= urlencode($product['name']) ?>%20(Product ID: <?= $product['name'] ?>)" class="card-whatsapp-btn">
                         <i class="fab fa-whatsapp"></i> Order Now
                     </a>
                 </div>
@@ -102,10 +102,10 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
                     <h3><?= $product['name'] ?></h3>
                     <div class="product-meta">
                         <span class="product-category"><?= $product['category'] ?></span>
-                        <span class="product-price"><?= number_format($product['price'], 2) ?> Ks</span>
+                        <span class="product-price">Tsh.<?= number_format($product['price'], 2) ?> </span>
                     </div>
                     <p class="product-description"><?= substr($product['description'], 0, 60) ?>...</p>
-                    <a href="https://wa.me/+255748791897?text=I%20want%20to%20buy%20<?= urlencode($product['name']) ?>%20(Product ID: <?= $product['id'] ?>)" class="card-whatsapp-btn">
+                    <a href="https://wa.me/+255748791897?text=I%20want%20to%20buy%20<?= urlencode($product['name']) ?>%20(Product ID: <?= $product['name'] ?>)" class="card-whatsapp-btn">
                         <i class="fab fa-whatsapp"></i> Order Now
                     </a>
                 </div>

@@ -463,7 +463,7 @@ body {
 <div class="dashboard-container">
     <aside class="sidebar">
         <ul class="sidebar-menu">
-            <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="active"><a href="adminDashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="product.php"><i class="fas fa-tshirt"></i> Products</a></li>
             <li><a href="comment.php"><i class="fas fa-comments"></i> Comments <span class="badge"><?php echo $total_feedback; ?></span></a></li>
             <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>

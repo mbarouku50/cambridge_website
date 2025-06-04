@@ -185,16 +185,16 @@ footer {
             <div class="footer-section footer-contact">
                 <h3>Contact Info</h3>
                 <p>info@cambridge.com</p>
-                <p>+255 123 456 789</p>
+                <p>+255 748 791 897</p>
                 <p>Dar es Salaam, Tanzania</p>
             </div>
             
             <div class="footer-section footer-social">
                 <h3>Connect With Us</h3>
                 <div class="social-icons">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="www.instagram.com/p/DJvrM-fIlRi/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://wa.me/+255748791897" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             

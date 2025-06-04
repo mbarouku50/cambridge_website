@@ -2,9 +2,7 @@
 session_start();
 include("../connection.php");
 
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
 
 // Check if admin is logged in
 if(!isset($_SESSION['email'])) {
@@ -34,24 +32,31 @@ mysqli_stmt_close($stmt);
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         // Update profile information
-        if(isset($_POST['update_profile'])) {
-            
-            $query = "UPDATE admin_users SET email = ? WHERE email = ?";
-            $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "sss", $fullname, $phone, $admin_email);
-            
-            if(!mysqli_stmt_execute($stmt)) {
-                throw new Exception("Failed to update profile: " . mysqli_error($conn));
-            }
-            
-            mysqli_stmt_close($stmt);
-            
-            // Update session data
-            $_SESSION['fullname'] = $fullname;
-            
-            $success = true;
-            $message = "Profile updated successfully!";
-        }
+if(isset($_POST['update_profile'])) {
+    $new_email = $_POST['email']; // Get the new email from form
+    
+    // Validate email
+    if(!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+        throw new Exception("Invalid email format");
+    }
+    
+    $query = "UPDATE admin_users SET email = ? WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $new_email, $admin_email);
+    
+    if(!mysqli_stmt_execute($stmt)) {
+        throw new Exception("Failed to update profile: " . mysqli_error($conn));
+    }
+    
+    mysqli_stmt_close($stmt);
+    
+    // Update session data with new email
+    $_SESSION['email'] = $new_email;
+    $admin_email = $new_email; // Update the local variable too
+    
+    $success = true;
+    $message = "Email updated successfully!";
+}
         
 
                 // Change password
@@ -109,169 +114,175 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Settings | Clothing Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #6C63FF;
-            --primary-light: #a29bfe;
-            --dark-color: #2D3436;
-            --dark-light: #636e72;
-            --light-color: #ffffff;
-            --gray-color: #f8f9fa;
-            --gray-dark: #dfe6e9;
-            --danger-color: #d63031;
-            --success-color: #00b894;
-            --warning-color: #fdcb6e;
-            --sidebar-width: 280px;
-            --header-height: 70px;
-            --transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
+           :root {
+    --primary-color: #6C63FF;
+    --primary-light: #a29bfe;
+    --dark-color: #2D3436;
+    --dark-light: #636e72;
+    --light-color: #ffffff;
+    --gray-color: #f8f9fa;
+    --gray-dark: #dfe6e9;
+    --success-color: #00b894;
+    --danger-color: #d63031;
+    --warning-color: #fdcb6e;
+    --info-color: #0984e3;
+    --sidebar-width: 280px;
+    --header-height: 70px;
+    --transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        body {
-            background-color: var(--gray-color);
-            color: var(--dark-color);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+body {
+    background-color: var(--gray-color);
+    color: var(--dark-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
-        .dashboard-header {
-            background-color: var(--light-color);
-            color: var(--dark-color);
-            padding: 0 30px;
-            height: var(--header-height);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-        }
+.dashboard-header {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    padding: 0 30px;
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
 
-        .logo {
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .logo-icon {
-            color: var(--primary-color);
-            font-size: 24px;
-        }
+.logo-icon {
+    color: var(--primary-color);
+    font-size: 24px;
+}
 
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+.logo span {
+    color: var(--primary-color);
+}
 
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-color);
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .logout-btn {
-            background-color: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-color);
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-        .logout-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
+.logout-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-        .dashboard-container {
-            display: flex;
-            padding-top: var(--header-height);
-        }
+.logout-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
 
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--light-color);
-            height: calc(100vh - var(--header-height));
-            padding: 20px 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-            position: fixed;
-            transition: var(--transition);
-            z-index: 90;
-        }
+.dashboard-container {
+    display: flex;
+    padding-top: var(--header-height);
+}
 
-        .sidebar-menu {
-            list-style: none;
-            margin-top: 20px;
-        }
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--light-color);
+    height: calc(100vh - var(--header-height));
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    position: fixed;
+    transition: var(--transition);
+    z-index: 90;
+}
 
-        .sidebar-menu li {
-            margin: 5px 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
+.sidebar-menu {
+    list-style: none;
+    margin-top: 20px;
+}
 
-        .sidebar-menu li:hover {
-            background-color: rgba(108, 99, 255, 0.1);
-        }
+.sidebar-menu li {
+    margin: 5px 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: var(--transition);
+}
 
-        .sidebar-menu a {
-            color: var(--dark-light);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            font-weight: 500;
-        }
+.sidebar-menu li:hover {
+    background-color: rgba(108, 99, 255, 0.1);
+}
 
-        .sidebar-menu i {
-            width: 24px;
-            text-align: center;
-            font-size: 18px;
-        }
+.sidebar-menu a {
+    color: var(--dark-light);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    font-weight: 500;
+}
 
-        .sidebar-menu li.active {
-            background-color: var(--primary-color);
-        }
+.sidebar-menu i {
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+}
 
-        .sidebar-menu li.active a {
-            color: var(--light-color);
-        }
+.sidebar-menu li.active {
+    background-color: var(--primary-color);
+}
+
+.sidebar-menu li.active a {
+    color: var(--light-color);
+}
 
         .main-content {
-            flex: 1;
-            padding: 30px;
-            margin-left: var(--sidebar-width);
-            transition: var(--transition);
-        }
+    flex: 1;
+    padding: 30px;
+    margin-left: var(--sidebar-width);
+    transition: var(--transition);
+}
 
         .page-header {
             display: flex;
@@ -498,116 +509,175 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 14px;
             margin-bottom: 5px;
         }
+        .settings-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .menu-toggle {
-                display: block !important;
-            }
-        }
+.section-title {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: var(--dark-color);
+}
 
-        @media (max-width: 768px) {
-            .dashboard-header {
-                padding: 0 15px;
-            }
-            
-            .main-content {
-                padding: 20px 15px;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
+/* New mobile responsiveness */
+@media (max-width: 600px) {
+    .settings-section {
+        padding: 15px;
+    }
 
-            .form-actions {
-                flex-direction: column;
-                gap: 10px;
-            }
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+    .form-control {
+        padding: 10px;
+        font-size: 14px;
+    }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--dark-color);
-        }
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 80;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    .user-menu {
+        width: 100%;
+        justify-content: space-between;
+    }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .page-title {
+        font-size: 22px;
+    }
 
-        /* Preview for uploaded image */
-        .image-preview {
-            display: none;
-            margin-top: 15px;
-            max-width: 300px;
-            border-radius: 8px;
-            border: 1px solid var(--gray-dark);
-        }
+    .section-title {
+        font-size: 18px;
+    }
+}
+
+
+        
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .menu-toggle {
+        display: block !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-header {
+        padding: 0 15px;
+    }
+    
+    .main-content {
+        padding: 20px 15px;
+    }
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--dark-color);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 80;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Badge for notifications */
+.badge {
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-left: auto;
+}
+
     </style>
 </head>
 <body>
-    <header class="dashboard-header">
-        <div class="logo">
+<header class="dashboard-header">
+    <div class="logo">
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
         <span class="logo-icon"><i class="fas fa-tshirt"></i></span>
         Admin</span></span>
     </div>
-        <nav class="nav-menu">
-            <span>Welcome, <?php echo htmlspecialchars($_SESSION['email']); ?></span>
-            <a href="logout.php">Logout</a>
-        </nav>
-    </header>
-    
+    <div class="user-menu">
+        <div class="user-profile">
+            <?php echo strtoupper(substr($email, 0, 1)); ?>
+            <span><?php echo htmlspecialchars($email); ?></span>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='logout.php'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</header>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
     <div class="dashboard-container">
         <aside class="sidebar">
             <ul class="sidebar-menu">
-                <li><a href="adminDashboard.php">Dashboard</a></li>
-                <li><a href="product.php">Products</a></li>
-                <li><a href="comment.php">Comments</a></li>
-                <li class="active"><a href="settings.php">Settings</a></li>
-            </ul>
+            <li ><a href="adminDashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="product.php"><i class="fas fa-tshirt"></i> Products</a></li>
+            <li ><a href="comment.php"><i class="fas fa-comments"></i> Comments <span class="badge"><?php echo $total_feedback; ?></span></a></li>
+            <li class="active"><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
         </aside>
         
         <main class="main-content">
@@ -630,8 +700,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form action="settings.php" method="POST">
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" 
-                               value="<?php echo htmlspecialchars($admin_data['email'] ?? ''); ?>" >
+                        <input type="email" id="email" name="email" class="form-control" 
+                            value="<?php echo htmlspecialchars($admin_data['email'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
                         <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
@@ -666,4 +736,37 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         </main>
     </div>
 </body>
+
+<script>
+// Toggle sidebar on mobile
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('active');
+    document.querySelector('.overlay').classList.toggle('active');
+});
+
+// Close sidebar when clicking on overlay
+document.querySelector('.overlay').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.remove('active');
+    this.classList.remove('active');
+});
+
+// Add animation to cards when they come into view
+const cards = document.querySelectorAll('.card');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+cards.forEach(card => {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+    observer.observe(card);
+});
+</script>
+
 </html>

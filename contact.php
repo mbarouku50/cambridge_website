@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
+<br><br>
 <section id="contact-page">
     <div class="section-header">
         <h2>Get In Touch</h2>
@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <strong>Email:</strong> <a href="mailto:info@cambridge.com">info@cambridge.com</a>
             </div>
             <div class="info-item">
-                <strong>Phone:</strong> <a href="tel:+255689118095">+255 689 118 095</a>
+                <strong>Phone:</strong> <a href="tel:+255748791897">+255 748 791 897</a>
             </div>
             <div class="info-item">
-                <strong>WhatsApp:</strong> <a href="https://wa.me/+255689118095?text=Hello%20I%20have%20a%20question" target="_blank" rel="noopener noreferrer">Chat with us on WhatsApp</a>
+                <strong>WhatsApp:</strong> <a href="https://wa.me/+255748791897?text=Hello%20I%20have%20a%20question" target="_blank" rel="noopener noreferrer">Chat with us on WhatsApp</a>
             </div>
             <div class="info-item">
                 <strong>Address:</strong> <p>Upanga, Dar es Salaam, Tanzania</p>
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <h3>Connect Socially</h3>
             <div class="social-links">
-                <a href="https://instagram.com/hassanayn_kashmal" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <a href="https://www.instagram.com/p/DJvrM-fIlRi/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                     <i class="fab fa-instagram"></i> Instagram
                 </a>
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">

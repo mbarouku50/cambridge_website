@@ -35,44 +35,44 @@ include("connection.php");
                 $colors = explode(',', $row['colors']);
                 
                 echo '
-                <div class="product-card" data-category="'.str_replace(' ', '-', strtolower($row['category'])).'">
-                    <div class="product-image">
-                        <img src="'.$row['image_path'].'" alt="'.$row['name'].'">
-                        <div class="product-badge">New</div>
-                    </div>
-                    <div class="product-details">
-                        <h3>'.$row['name'].'</h3>
-                        <p class="product-description">'.substr($row['description'], 0, 50).'...</p>
-                        <div class="product-price">'.number_format($row['price'], 2).' Ks</div>
-                        
-                        <div class="product-options">
-                            <div class="size-options">
-                                <label>Sizes:</label>
-                                <select>
-                                    <option value="">Select size</option>';
-                                    foreach($sizes as $size) {
-                                        echo '<option value="'.trim($size).'">'.trim($size).'</option>';
-                                    }
-                                echo '</select>
+                    <div class="product-card" data-category="'.str_replace(' ', '-', strtolower($row['category'])).'">
+                        <div class="product-image">
+                            <img src="'.$row['image_path'].'" alt="'.$row['name'].'">
+                            <div class="product-badge">New</div>
+                        </div>
+                        <div class="product-details">
+                            <h3>'.$row['name'].'</h3>
+                            <p class="product-description">'.substr($row['description'], 0, 50).'...</p>
+                            <div class="product-price">'.number_format($row['price'], 2).' Tsh.</div>
+                            
+                            <div class="product-options">
+                                <div class="size-options">
+                                    <label>Sizes:</label>
+                                    <select>
+                                        <option value="">Select size</option>';
+                                        foreach($sizes as $size) {
+                                            echo '<option value="'.trim($size).'">'.trim($size).'</option>';
+                                        }
+                                    echo '</select>
+                                </div>
+                                
+                                <div class="color-options">
+                                    <label>Colors:</label>
+                                    <div class="color-selector">';
+                                        foreach($colors as $color) {
+                                            $colorClass = strtolower(trim($color));
+                                            echo '<span class="color-dot '.$colorClass.'" title="'.$color.'"></span>';
+                                        }
+                                    echo '</div>
+                                </div>
                             </div>
                             
-                            <div class="color-options">
-                                <label>Colors:</label>
-                                <div class="color-selector">';
-                                    foreach($colors as $color) {
-                                        $colorClass = strtolower(trim($color));
-                                        echo '<span class="color-dot '.$colorClass.'" title="'.$color.'"></span>';
-                                    }
-                                echo '</div>
+                            <div class="product-actions">
+                                <a href="https://wa.me/+255748791897?text=I%20want%20to%20buy%20'.urlencode($row['name']).'%20(Product%20Name:%20'.$row['name'].')" class="add-to-cart">Order via WhatsApp</a>
+                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
                             </div>
                         </div>
-                        
-                        <div class="product-actions">
-                            <button class="add-to-cart">Order via WhatsApp</button>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>';
+                    </div>';
             }
         } else {
             echo '<p class="no-products">No products found.</p>';
@@ -109,7 +109,7 @@ include("connection.php");
     
     .products-header h1 {
         font-family: 'Playfair Display', serif;
-        font-size: 2.5rem;
+        font-size: 1.5rem;
         color: var(--dark-color);
         margin-bottom: 1rem;
     }
@@ -189,7 +189,7 @@ include("connection.php");
     }
     
     .product-details {
-        padding: 1.5rem;
+        padding: 1rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -205,19 +205,16 @@ include("connection.php");
     .product-description {
         color: var(--text-light);
         font-size: 0.9rem;
-        margin-bottom: 1rem;
+       
     }
     
     .product-price {
         font-size: 1.25rem;
         font-weight: bold;
         color: var(--primary-color);
-        margin-bottom: 1rem;
+       
     }
-    
-    .product-options {
-        margin-bottom: 1.5rem;
-    }
+
     
     .size-options, .color-options {
         margin-bottom: 1rem;
